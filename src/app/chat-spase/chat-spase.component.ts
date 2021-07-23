@@ -8,7 +8,7 @@ const CURRENT_USER: User = new User(2, '開発屋さん');
 
 const COMMENTS: Comment[] = [
   new Comment(ANOTHER_USER,'bug発見しておきました。'),
-  new Comment(ANOTHER_USER,'詳細はチケット確認してください'),
+  new Comment(ANOTHER_USER,'詳細はチケットを確認してください'),
   new Comment(CURRENT_USER,'了解です！'),
   new Comment(CURRENT_USER,'bug修正して本番環境に上げておきました！'),
 ];
@@ -25,7 +25,7 @@ export class ChatSpaseComponent implements OnInit {
   comments = COMMENTS;
   currentUser = CURRENT_USER;
   comment = '';
-  commentDateFormat = 'yyyy年MM月dd日 HH:mm';
+  // commentDateFormat = 'yyyy年MM月dd日 HH:mm';
 
   constructor() {}
 

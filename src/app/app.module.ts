@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { ChatSpaseComponent } from './chat-spase/chat-spase.component';
 import { CommentDatePipe } from './chat-spase/pipes/comment-date.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { CommentDatePipe } from './chat-spase/pipes/comment-date.pipe';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule
   ],
   providers: [],
