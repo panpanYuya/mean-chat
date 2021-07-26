@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatSpaseComponent } from './chat-spase.component';
+import { ChatSpaseComponent } from './chat-space.component';
 
 describe('ChatSpaseComponent', () => {
   let component: ChatSpaseComponent;

@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/dev');
 const FakeDb = require('./fake-db');
+const chatRoutes = require('./routes/chat');
+const mongodb = require('mongodb');
+const mongoClient = mongodb.MongoClient
+const assert = require('assert');
 
 mongoose.connect(config.DB_URI, {
   useNewUrlParser: true,
@@ -21,9 +25,7 @@ const Schema = mongoose.Schema;
 
 const app = express();
 
-app.get('/chat',  function(req, res) {
-  res.json({'success': true});
-});
+app.use('/api/v1/chats', chatRoutes);
 
 const PORT = process.env.PORT || '3001';
 

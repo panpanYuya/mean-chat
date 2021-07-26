@@ -1,34 +1,48 @@
 const Chat = require('./model/chat');
+const User = require('./model/user');
 
 class FakeDb {
   constructor(){
     this.chats = [
       {
-        name: 'テスト屋さん',
-        message: 'bug発見しておきました。'
+        message: 'bug発見しておきました。',
+          uid: 2
       },
       {
-        name: 'テスト屋さん',
-        message: '詳細はチケットを確認してください'
+        message: '詳細はチケットを確認してください',
+        uid: 2
       },
       {
-        name: '開発屋さん',
-        message: '了解です！'
+        message: '了解です！',
+        uid: 1,
       },
       {
-        name: '開発屋さん',
-        message: 'bug修正して本番環境に上げておきました！'
+        message: 'bug修正して本番環境に上げておきました！',
+        uid: 1,
       }
-    ]
+    ];
+
+    this.users = [
+      {
+        uid: 1,
+        name: '開発屋さん',
+      },
+      {
+        uid: 2,
+        name: 'テスト屋さん',
+      }
+    ];
   }
 
   async initDb() {
-    await this.cleanDb()
-    this.pushChatToDB()
+    await this.cleanDb();
+    this.pushChatToDB();
+    this.pushUserToDB();
   }
 
   async cleanDb() {
-    await Chat.deleteMany()
+    await Chat.deleteMany();
+    await User.deleteMany();
   }
 
   pushChatToDB(){
@@ -40,8 +54,18 @@ class FakeDb {
     )
   }
 
+  pushUserToDB(){
+    this.users.forEach(
+      (user) => {
+        const newUser = new User(user);
+        newUser.save();
+      }
+    )
+  }
+
   seeDb() {
     this.pushChatToDB();
+    this.pushUserToDB();
   }
 
 }

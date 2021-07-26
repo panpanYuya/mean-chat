@@ -1,7 +1,7 @@
 <div class="page">
   <section class="chat">
     <div class="chat-timeline">
-      <div
+      <!-- <div
        *ngFor="let comment of comments"
        class="list-group-item list-group-item-action flex-column align-items-start border-0"
       >
@@ -26,19 +26,19 @@
             <a href="#" class="icon">{{ comment.user.initial }}</a>
           </div>
         </div>
-      </div>
+      </div> -->
       <div
-       *ngFor="chat$ | async as chat"
+       *ngFor="let chat of chats"
         class="list-group-item list-group-item-action flex-column align-items-start border-0"
       >
         <div class="media">
-          <div *ngIf="comment.user.uid !== currentUser.uid" class="media-left">
-            <a href="#" class="icon">{{ comment.user.initial }}</a>
+          <div class="media-left">
+            <!-- <a href="#" class="icon">{{ comment.user.initial }}</a> -->
           </div>
           <div class="media-body">
             <div class="d-flex w-100 justify-content-between">
-              <h4 class="media-heading">{{ chat.name }}</h4>
-              <small class="media-date">{{comment.date | commentDate }}</small>
+              <h4 class="media-heading">{{ chat.user.name }}</h4>
+              <!-- <small class="media-date">{{comment.date | commentDate }}</small> -->
             </div>
             <pre>{{chat.message}}</pre>
           </div>
