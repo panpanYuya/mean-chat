@@ -15,7 +15,7 @@ export class ChatService {
     return this.http.get('/api/v1/chats');
   }
 
-  addComment(chat : Chat): Observable<any>{
+  addComment(chat : any): Observable<any>{
     return this.http.post('/api/v1/chats/add', chat);
   }
 }

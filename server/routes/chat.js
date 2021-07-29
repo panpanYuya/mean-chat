@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Chat = require('../model/chat');
+const User = require('../model/user');
 const MongoClient = require("mongodb").MongoClient;
 const config = require('../config/dev');
 
@@ -35,9 +36,10 @@ router.get('', function(req, res){
 
 router.post('/add', function(req, res) {
   const {message, uid}= req.body
-  var findResult = this.findUser(uid);
+  const userId = parseInt(uid)
+  var findResult = findUser(userId);
   if(findResult) {
-    var saveResult = this.commentSave(message, uid);
+    var saveResult = commentSave(message, userId);
     if(saveResult){
       return res.json({"added": true});
     }else {
@@ -50,22 +52,43 @@ router.post('/add', function(req, res) {
 });
 
 function commentSave(message, uid) {
-  const chat = new Chat({message, uid})
-  chat.save(function(err) {
-    if(err) {
-      return false;
+  var saveResult = false;
+  const chat = new Chat({message, uid});
+  return new Promise(
+    () => {
+      chat.save(function(err, foundChat) {
+        if(err) {
+          saveResult = false;
+        }
+        if(foundChat){
+          saveResult = true;
+        }
+        return saveResult;
+      })
     }
-    return true;
-  })
+  )
+
 }
 
 function findUser(uid) {
-  User.findOne({uid : uid}, function(err, User) {
-    if(err) {
-      return false;
+  return new Promise(
+    () => {
+      var result = false;
+      try{
+         User.findOne({uid : uid}, function(err, foundUser) {
+          if(err) {
+            result = false;
+          }
+          if(foundUser) {
+            result = true;
+          }
+        });
+      }catch(err) {
+        result = false;
+      }
+      return result;
     }
-    return true;
-  });
+  );
 };
 
 

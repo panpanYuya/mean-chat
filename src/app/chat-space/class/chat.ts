@@ -1,6 +1,6 @@
 export class Chat {
 
-  constructor(public uid: number, public chat: string){
+  constructor(public uid: number, public message: string){
 
   }
 

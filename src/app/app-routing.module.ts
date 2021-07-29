@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatSpaceModule } from './chat-space/chat-space.module';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'chats', pathMatch: 'full'},
+  {path: '', redirectTo: 'chat', pathMatch: 'full'},
 ]
 
 

@@ -32,15 +32,24 @@
         class="list-group-item list-group-item-action flex-column align-items-start border-0"
       >
         <div class="media">
-          <div class="media-left">
-            <!-- <a href="#" class="icon">{{ comment.user.initial }}</a> -->
+          <div
+           *ngIf="chat.uid !== currentUser.uid"
+           class="media-left"
+          >
+          <a href="#" class="icon">{{ otherUserIntial }}</a>
           </div>
           <div class="media-body">
             <div class="d-flex w-100 justify-content-between">
-              <h4 class="media-heading">{{ chat.user.name }}</h4>
+              <h4 class="media-heading">{{ chat.user[0].name }}</h4>
               <!-- <small class="media-date">{{comment.date | commentDate }}</small> -->
             </div>
             <pre>{{chat.message}}</pre>
+          </div>
+          <div
+           *ngIf="chat.uid === currentUser.uid"
+            class="media-right"
+          >
+            <a href="#" class="icon">{{ currentUserIntial }}</a>
           </div>
         </div>
       </div>

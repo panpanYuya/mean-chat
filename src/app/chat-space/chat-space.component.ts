@@ -29,8 +29,9 @@ export class ChatSpaseComponent implements OnInit {
 
   comments = COMMENTS;
   currentUser = CURRENT_USER;
+  currentUserIntial = '';
+  otherUserIntial = '';
   comment = '';
-  // commentDateFormat = 'yyyy年MM月dd日 HH:mm';
   chats: any;
 
   constructor(
@@ -47,7 +48,7 @@ export class ChatSpaseComponent implements OnInit {
     this.chatService.addComment(chat).subscribe(
       (data) => {
         console.log("Success")
-        this.router.navigate(['/chat'])
+        this.router.navigate(['/'])
       },
       (err) => {
         console.log('次のエラーが発生しました。' + err)
@@ -60,6 +61,13 @@ export class ChatSpaseComponent implements OnInit {
     chatsObservable.subscribe(
       (data) => {
         this.chats = data;
+        for (let i = 0; i < this.chats.length; i++){
+          if(this.chats[i].uid === CURRENT_USER.uid){
+              this.currentUserIntial = this.chats[i].user[0].name.slice(0, 1);
+          }else {
+            this.otherUserIntial = this.chats[i].user[0].name.slice(0, 1);
+          }
+        }
         console.log('次のデータが出力されました。' + data);
       },
       (err) => {
