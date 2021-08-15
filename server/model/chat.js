@@ -10,6 +10,10 @@ const chatSchema = new Schema({
   uid: {
     type: Number,
     required: true
+  },
+  date: {
+    type: Number,
+    required: true
   }
 });
 

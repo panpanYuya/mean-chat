@@ -2,58 +2,61 @@ const express = require('express');
 const router = express.Router();
 const Chat = require('../model/chat');
 const User = require('../model/user');
-const MongoClient = require("mongodb").MongoClient;
 const config = require('../config/dev');
 
 
-router.get('', function(req, res){
-
-  MongoClient.connect(config.DB_URI, (err, client) => {
-    var db = client.db("myFirstDatabase");
-    db.collection("chats").aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "uid",
-          foreignField: "uid",
-          as: "user"
-        }
-      }
-    ]).toArray()
-      .then((chat) => {
-        console.log(chat);
-        res.json(chat);
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(422).send({errors: [{title: 'User error',detail: 'Something went wrong!'}]})
-      })
-      .then(() => {
-        client.close();
-      });
-  });
-});
-
-router.post('/add', function(req, res) {
-  const {message, uid}= req.body
-  const userId = parseInt(uid)
+let addComment = function(chatSchema) {
+  // const {message, uid}= req.body
+  const userId = parseInt(chatSchema.uid);
   var findResult = findUser(userId);
   if(findResult) {
-    var saveResult = commentSave(message, userId);
+    var saveResult = commentSave(chatSchema.message, userId, chatSchema.date);
     if(saveResult){
-      return res.json({"added": true});
+      return ({"added": true});
     }else {
-      res.status(422).send({errors: [{title: 'コメント登録エラー',detail: 'コメントを登録できませんでした。再度お試しください。'}]})
+      return ({errors: [{title: 'コメント登録エラー',detail: 'コメントを登録できませんでした。再度お試しください。'}]});
     }
   } else {
-    res.status(422).send({errors: [{title: 'ユーザエラー',detail: '対象のユーザーが存在しません。'}]})
+    return ({errors: [{title: 'ユーザエラー',detail: '対象のユーザーが存在しません。'}]});
   }
 
-});
+};
 
-function commentSave(message, uid) {
-  var saveResult = false;
-  const chat = new Chat({message, uid});
+// let editComment = function(editSchema) {
+//   let editResult = false;
+//   // let objectId = mongoose.Types.ObjectId(editSchema.id);
+//   const userId = parseInt(editSchema.uid)
+//   let findResult = findUser(userId);
+//   if(!findResult){
+//     return editResult;
+//   }
+//   const chat = new Chat(editSchema.message, editSchema.userId , editSchema.date);
+//   return new Promise(
+//     () => {
+//       chat.findOneAndUpdate(
+//         {
+//           _id: editSchema.id
+//         },
+//         {$set: {
+//           message: edit.message,
+//           uid: edit.uid,
+//           date: edit.date
+//         }}, function(err){
+//           if(err){
+//             return editResult;
+//           }
+//           editResult = true;
+//           return editResult;
+//         }
+//       )
+//     }
+//   )
+// };
+
+
+function commentSave(message, uid, date) {
+  let saveResult = false;
+  const chat = new Chat({message, uid, date});
   return new Promise(
     () => {
       chat.save(function(err, foundChat) {
@@ -92,4 +95,7 @@ function findUser(uid) {
 };
 
 
-module.exports = router
+module.exports = {
+  router,
+  addComment
+}

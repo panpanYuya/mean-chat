@@ -6,19 +6,23 @@ class FakeDb {
     this.chats = [
       {
         message: 'bug発見しておきました。',
-          uid: 2
-      },
-      {
-        message: '詳細はチケットを確認してください',
-        uid: 2
-      },
-      {
-        message: '了解です！',
-        uid: 1,
-      },
-      {
-        message: 'bug修正して本番環境に上げておきました！',
-        uid: 1,
+          uid: 2,
+          date: '1628513313786'
+        },
+        {
+          message: '詳細はチケットを確認してください',
+          uid: 2,
+          date: '1628513313786'
+        },
+        {
+          message: '了解です！',
+          uid: 1,
+          date: '1628513313786'
+        },
+        {
+          message: 'bug修正して本番環境に上げておきました！',
+          uid: 1,
+          date: '1628513313786'
       }
     ];
 
@@ -26,10 +30,12 @@ class FakeDb {
       {
         uid: 1,
         name: '開発屋さん',
+        initial: '開'
       },
       {
         uid: 2,
         name: 'テスト屋さん',
+        initial: 'テ'
       }
     ];
   }

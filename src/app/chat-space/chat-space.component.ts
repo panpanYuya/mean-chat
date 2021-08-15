@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
 const ANOTHER_USER: User = new User(1, 'テスト屋さん');
 const CURRENT_USER: User = new User(2, '開発屋さん');
 
-const COMMENTS: Comment[] = [
-  new Comment(ANOTHER_USER,'bug発見しておきました。'),
-  new Comment(ANOTHER_USER,'詳細はチケットを確認してください'),
-  new Comment(CURRENT_USER,'了解です！'),
-  new Comment(CURRENT_USER,'bug修正して本番環境に上げておきました！'),
-];
+// const COMMENTS: Comment[] = [
+//   new Comment(ANOTHER_USER,'bug発見しておきました。'),
+//   new Comment(ANOTHER_USER,'詳細はチケットを確認してください'),
+//   new Comment(CURRENT_USER,'了解です！'),
+//   new Comment(CURRENT_USER,'bug修正して本番環境に上げておきました！'),
+// ];
 
 
 
@@ -27,42 +27,61 @@ const COMMENTS: Comment[] = [
 })
 export class ChatSpaseComponent implements OnInit {
 
-  comments = COMMENTS;
+  // comments = COMMENTS;
   currentUser = CURRENT_USER;
   currentUserIntial = '';
   otherUserIntial = '';
   comment = '';
-  chats: any;
+  chats: Comment[];
 
   constructor(
     private chatService: ChatService,
     private router: Router
   ) {
-    this.getChat(chatService);
+    this.getChat();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chatService.connect(1);
+    this.getChat();
+  }
 
   addComment(comment: string): void {
-    const chat =new Chat(this.currentUser.uid, comment);
-    this.chatService.addComment(chat).subscribe(
-      (data) => {
-        console.log("Success")
-        this.router.navigate(['/'])
-      },
+    const commentSchema =new Comment(this.currentUser.uid, comment);
+    this.chatService.sendMessage(1, commentSchema);
+    this.chatService.reciveSendMessages().subscribe(
       (err) => {
         console.log('次のエラーが発生しました。' + err)
       }
-    )
+    );
+    console.log("Success");
+    this.comment = "";
+    this.chats = [];
+    this.chatService.selectMessages(1);
+    this.getChat();
   }
 
-  getChat(chatService: ChatService){
-    const chatsObservable = this.chatService.getChats()
-    chatsObservable.subscribe(
-      (data) => {
+  editMessage(chat: string):void {
+    let editChat = new Chat(this.currentUser.uid, chat);
+    this.chatService.editMessage(1, editChat);
+    this.chatService.reciveEditMessages().subscribe(
+      (err) => {
+        console.log('次のエラーが発生しました。' + err);
+      }
+    );
+    console.log("Success");
+    this.comment ="";
+    this.chats = [];
+    this.chatService.selectMessages(1);
+    this.getChat();
+  }
+
+  getChat(){
+    this.chatService.reciveSelectMessages().subscribe(
+      (data : Comment[]) => {
         this.chats = data;
         for (let i = 0; i < this.chats.length; i++){
-          if(this.chats[i].uid === CURRENT_USER.uid){
+          if(this.chats[i].user[0].uid === CURRENT_USER.uid){
               this.currentUserIntial = this.chats[i].user[0].name.slice(0, 1);
           }else {
             this.otherUserIntial = this.chats[i].user[0].name.slice(0, 1);
@@ -74,6 +93,20 @@ export class ChatSpaseComponent implements OnInit {
         console.log('次のエラーが発生しました。' + err);
       }
     )
+  }
+
+  deleteMessage(chat: string):void {
+    let editChat = new Chat(this.currentUser.uid, chat);
+    this.chatService.deleteMessage(1, editChat);
+    this.chatService.reciveDeleteMessages().subscribe(
+      (err) => {
+        console.log('次のエラーが発生しました。' + err);
+      }
+    );
+    console.log("Success");
+    this.chats = [];
+    this.chatService.selectMessages(1);
+    this.getChat();
   }
 
 }

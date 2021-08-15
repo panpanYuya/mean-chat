@@ -40,10 +40,30 @@
           </div>
           <div class="media-body">
             <div class="d-flex w-100 justify-content-between">
-              <h4 class="media-heading">{{ chat.user[0].name }}</h4>
-              <!-- <small class="media-date">{{comment.date | commentDate }}</small> -->
+              <h4 class="media-heading">{{ chat.user[0].name }}
+                <ng-container *ngIf="chat.user[0].uid === currentUser.uid">
+                  <i class="fa fa-edit ml-2" title="編集" (click)="chat.isEdit = !chat.isEdit"></i>
+                  <!-- <i class="fa fa-edit ml-2" title="編集"></i> -->
+                  <i class="fa fa-trash ml-2" title="削除" (click)="deleteMessage(chat)"></i>
+                  <div></div>
+                </ng-container>
+              </h4>
+              <small class="media-date">{{chat.date | date:commentDate }}</small>
             </div>
-            <pre>{{chat.message}}</pre>
+            <ng-container *ngIf="!chat.isEdit">
+            <!-- <ng-container> -->
+              <pre>{{chat.message}}</pre>
+            </ng-container>
+            <ng-container *ngIf="chat.isEdit">
+              <div class="input-group">
+                <textarea [(ngModel)]="chat.message" name="edit-comment" class="form-control"></textarea>
+                <!-- <input [ng-hide] value="chat.id"> -->
+              </div>
+              <div class="edit-buttons">
+                <button class="btn btn-success btn-sm" (click) ="editMessage(chat)">保存</button>
+                <button class="btn btn-warning btn-sm" (click) ="chat.isEdit = false">キャンセル</button>
+              </div>
+            </ng-container>
           </div>
           <div
            *ngIf="chat.uid === currentUser.uid"
@@ -55,7 +75,6 @@
       </div>
     </div>
   </section>
-
   <section class="chat-editor">
     <form class="chat-form">
       <div class="form-header d-flex flex-row-reverse mb-2">
