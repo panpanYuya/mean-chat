@@ -33,8 +33,10 @@ io.on("connection", (socket) => {
     useCreateIndex: true
   }).then(
     () => {
-      const fakeDb = new FakeDb();
-      // fakeDb.initDb();
+      if(process.env.NODE_ENV !== 'production'){
+        const fakeDb = new FakeDb();
+        // fakeDb.initDb();
+      }
     }
   )
   //messageはJSONのキー名
@@ -157,6 +159,16 @@ const app = express();
 app.use(bodyParser.json())
 
 const PORT = process.env.PORT || '3001';
+
+//serverを一つにする関係で、d28行目、29行目のurl以外が飛んできたらreq,resをindex.htmlに返す。
+//mean環境の動画1の113番で解説してる
+if(process.env.NODE_ENV === 'production') {
+  const appPath = path.join( __dirname, '..', 'dist', 'mean-chat')
+  app.use(express.static(appPath))
+  app.get('*', function(req, res){
+    res.sendFile(path.resolve(appPath, 'index.html'))
+  })
+}
 
 
 httpServer.listen('3001', function() {
