@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
   // socket.join("");
   // socket.to("UNIQUE").emit("message", "this is a pen");
   // io.to("UNIQUE").emit("message", "this is a pen");
-  //emit 送信者を除く人
+  //emit 送信者を除く人 送信
   //to('A')Aさんに向けて送信
   //braoadcast 同じ名前空間の人へ向けて送信
   //onは受け取る
