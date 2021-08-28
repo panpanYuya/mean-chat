@@ -160,6 +160,10 @@ app.use(bodyParser.json())
 
 const PORT = process.env.PORT || '3001';
 
+httpServer.listen(PORT, function() {
+  console.log('I am running')
+});
+
 //serverを一つにする関係で、d28行目、29行目のurl以外が飛んできたらreq,resをindex.htmlに返す。
 //mean環境の動画1の113番で解説してる
 if(process.env.NODE_ENV === 'production') {
@@ -171,9 +175,7 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 
-httpServer.listen(PORT, function() {
-  console.log('I am running')
-});
+
 
 
 
