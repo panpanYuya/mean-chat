@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const config = require('./config/dev');
 const FakeDb = require('./fake-db');
 const chatRoutes = require('./routes/chat');
-// const chat = require('./model/chat');
 const Chat = require('./model/chat');
 const mongodb = require('mongodb');
 const MongoClient = require("mongodb").MongoClient;
