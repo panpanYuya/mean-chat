@@ -172,7 +172,7 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 
-httpServer.listen('3001', function() {
+httpServer.listen(PORT, function() {
   console.log('I am running')
 });
 
