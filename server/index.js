@@ -1,5 +1,6 @@
 const express = require('express');
 const httpServer = require('http').createServer(express);
+//すべての通信を許可
 const io =require('socket.io')(httpServer, {
   cors: true,
   origins:["*"]
@@ -39,6 +40,8 @@ io.on("connection", (socket) => {
       }
     }
   )
+  //io すべてのルームに対してメッセージを送る
+  //socket　接続しているルームに対して送信することができる。
   //messageはJSONのキー名
   // socket.emit('message', ' Just conneted');
   // io.emit("connet everyone");
@@ -173,10 +176,4 @@ if(process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(appPath, 'index.html'))
   })
 }
-
-
-
-
-
-
 
